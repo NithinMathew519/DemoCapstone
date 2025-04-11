@@ -22,11 +22,12 @@ public class ProductController {
         return productService.getAllProducts();
     }
     @DeleteMapping("{id}")
-    public void deleteProductsById(){
-
+    public GenericProductDto deleteProductsById(@PathVariable("id")Long id){
+        return productService.deleteProductsById(id);
     }
-    public void updateProductsById(){
-
+    @PutMapping("/{id}")
+    public GenericProductDto updateProductsById(@PathVariable("id") Long id, @RequestBody GenericProductDto genericProductDto) {
+        return productService.updateProductsById(id, genericProductDto);
     }
     @PostMapping
     public GenericProductDto createProduct(@RequestBody GenericProductDto genericProductDto) {
