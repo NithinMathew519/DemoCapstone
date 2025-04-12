@@ -1,5 +1,6 @@
 package dev.nithin_mathew.project.backend.Capstone.productService.services;
 
+import dev.nithin_mathew.project.backend.Capstone.productService.Exceptions.ProductNotFoundException;
 import dev.nithin_mathew.project.backend.Capstone.productService.dtos.FakeStoreProductDto;
 import dev.nithin_mathew.project.backend.Capstone.productService.dtos.GenericProductDto;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -34,9 +35,13 @@ public class FakeStoreProductService implements ProductService {
         return genericProductDto;
     }
     @Override
-    public GenericProductDto getProductsById(Long id) {
+    public GenericProductDto getProductsById(Long id) throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.getForEntity(specificProductUrl, FakeStoreProductDto.class, id);
+        FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
+        if(fakeStoreProductDto == null){
+            throw new ProductNotFoundException("Product with id "+id+" Doesn't Exist");
+        }
 
 //        Convert FakeStoreProductDto to genericProductDto before returning
         return convertToGenericProductDto(responseEntity.getBody());

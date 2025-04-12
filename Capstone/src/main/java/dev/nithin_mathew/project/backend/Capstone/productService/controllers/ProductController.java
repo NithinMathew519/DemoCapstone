@@ -1,4 +1,6 @@
 package dev.nithin_mathew.project.backend.Capstone.productService.controllers;
+
+import dev.nithin_mathew.project.backend.Capstone.productService.Exceptions.ProductNotFoundException;
 import dev.nithin_mathew.project.backend.Capstone.productService.dtos.GenericProductDto;
 import dev.nithin_mathew.project.backend.Capstone.productService.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,7 +16,7 @@ public class ProductController {
         this.productService=productService;
     }
     @GetMapping("/{id}")
-    public GenericProductDto getProductsById(@PathVariable("id")Long id){
+    public GenericProductDto getProductsById(@PathVariable("id")Long id) throws ProductNotFoundException {
         return productService.getProductsById(id);
     }
     @GetMapping
@@ -33,4 +35,12 @@ public class ProductController {
     public GenericProductDto createProduct(@RequestBody GenericProductDto genericProductDto) {
         return productService.createProduct(genericProductDto);
     }
+//    @ExceptionHandler(ProductNotFoundException.class)
+//    private ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException productNotFoundException) {
+//        ExceptionDto exceptionDto = new ExceptionDto();
+//        exceptionDto.setMessage(productNotFoundException.getMessage());
+//        exceptionDto.setStatus(HttpStatus.NOT_FOUND);
+//        ResponseEntity<ExceptionDto> responseEntity = new ResponseEntity<>(exceptionDto, HttpStatus.NOT_FOUND);
+//        return responseEntity;
+//    }
 }
