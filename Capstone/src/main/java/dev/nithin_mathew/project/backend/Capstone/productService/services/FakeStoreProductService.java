@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -17,8 +16,6 @@ public class FakeStoreProductService implements ProductService {
     FakeStoreProductService(FakeStoreClientAdapter fakeStoreClientAdapter) {
         this.fakeStoreClientAdapter = fakeStoreClientAdapter;
     }
-    private final String specificProductUrl="https://fakestoreapi.com/products/{id}";
-    private final String getAllProductsUrl="https://fakestoreapi.com/products";
     private static GenericProductDto convertToGenericProductDto(FakeStoreProductDto fakeStoreProductDto){
         GenericProductDto genericProductDto = new GenericProductDto();
         genericProductDto.setId(fakeStoreProductDto.getId());

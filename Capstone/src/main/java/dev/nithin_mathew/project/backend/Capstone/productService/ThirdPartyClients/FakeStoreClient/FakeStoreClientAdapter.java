@@ -3,6 +3,7 @@ package dev.nithin_mathew.project.backend.Capstone.productService.ThirdPartyClie
 import dev.nithin_mathew.project.backend.Capstone.productService.Exceptions.ProductNotFoundException;
 import dev.nithin_mathew.project.backend.Capstone.productService.dtos.FakeStoreProductDto;
 import dev.nithin_mathew.project.backend.Capstone.productService.dtos.GenericProductDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,16 @@ import java.util.List;
 
 @Component
 public class FakeStoreClientAdapter {
+    private String specificProductUrl;
+    private String getAllProductsUrl;
     private final RestTemplateBuilder restTemplateBuilder;
-    FakeStoreClientAdapter(RestTemplateBuilder restTemplateBuilder) {
+    FakeStoreClientAdapter(RestTemplateBuilder restTemplateBuilder,@Value("${fakestore.api.url}") String fakeStoreUrl,@Value("${fakestore.api.paths.products}")String productsPath) {
         this.restTemplateBuilder = restTemplateBuilder;
+        this.getAllProductsUrl = fakeStoreUrl+productsPath;
+        this.specificProductUrl = fakeStoreUrl+productsPath+"/{id}";
     }
-    private final String specificProductUrl="https://fakestoreapi.com/products/{id}";
-    private final String getAllProductsUrl="https://fakestoreapi.com/products";
+//    private final String specificProductUrl="https://fakestoreapi.com/products/{id}";
+//    private final String getAllProductsUrl="https://fakestoreapi.com/products";
     public FakeStoreProductDto getProductsById(Long id) throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.getForEntity(specificProductUrl, FakeStoreProductDto.class, id);
