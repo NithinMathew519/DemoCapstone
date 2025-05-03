@@ -9,10 +9,15 @@ import dev.nithin_mathew.project.backend.Capstone.productService.models.Product;
 import dev.nithin_mathew.project.backend.Capstone.productService.repositories.CategoryRepository;
 import dev.nithin_mathew.project.backend.Capstone.productService.repositories.PriceRepository;
 import dev.nithin_mathew.project.backend.Capstone.productService.repositories.ProductRepository;
-		import org.springframework.boot.CommandLineRunner;
+import jakarta.transaction.Transactional;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+@Transactional
 @SpringBootApplication
 public class CapstoneApplication implements CommandLineRunner {
 
@@ -20,14 +25,14 @@ public class CapstoneApplication implements CommandLineRunner {
 	private final ProductRepository productRepository;
 	private final PriceRepository priceRepository;
 
-	public CapstoneApplication(CategoryRepository catogoryRepository,
-							   ProductRepository productRepository,
-							   PriceRepository priceRepository)
+    public CapstoneApplication(CategoryRepository catogoryRepository,
+                               ProductRepository productRepository,
+                               PriceRepository priceRepository, PriceRepository priceRepository1)
 							    								{
 		this.catogoryRepository = catogoryRepository;
 		this.productRepository = productRepository;
 		this.priceRepository = priceRepository;
-	}
+                                                                }
 
 //	private MentorRepository mentorRepository;
 //	private StudentRepository studentRepository;
@@ -122,25 +127,62 @@ public class CapstoneApplication implements CommandLineRunner {
 //			System.out.println(p.getTitle());
 //		}
 
-		Price price = new Price();
-		price.setCurrency("INR");
-		price.setValue(90000.0);
-		Price savedPrice=priceRepository.save(price);
-
-		Category category = new Category();
-		category.setName("Apple Devices");
-		Category savedCategory= catogoryRepository.save(category);
-
-		Product product = new Product();
-		product.setTitle("iPhone 15 Pro Max");
-		product.setDescription("The iPhone 15 Pro Max is the latest iPhone, introduced in September 2022. It comes with a six-inch display and a 6.7-megapixel camera.");
-		product.setCategory(savedCategory);
-		product.setPrice(savedPrice);
-
-		Product savedProduct= productRepository.save(product);
+//		Price price = new Price();
+//		price.setCurrency("INR");
+//		price.setValue(90000.0);
+//		Price savedPrice=priceRepository.save(price);
 
 
+//		Category category = new Category();
+//		category.setName("Apple Devices");
+//		Category savedCategory= catogoryRepository.save(category);
+//
+//
+//        Price price = new Price();
+//        price.setValue(100000);
+//        price.setCurrency("INR");
+//
+//        Product product1 = new Product();
+//        product1.setPrice(price);
+//        product1.setTitle("iPhone 15 pro max");
+//        product1.setDescription("Best iPhone ever.");
+//        product1.setImage("IMG");
+//        product1.setCategory(category);
+//        Product savedProduct = productRepository.save(product1);
+//
+//
+//        Price price1 = new Price();
+//        price1.setValue(100000);
+//        price1.setCurrency("INR");
+//
+//
+//        Product product2 = new Product();
+//        product2.setPrice(price1);
+//        product2.setTitle("iPhone 15 pro max");
+//        product2.setDescription("Best iPhone ever.");
+//        product2.setImage("IMG");
+//        product2.setCategory(category);
+//        Product savedProduct1 = productRepository.save(product2);
+//
+//        Price price2 = new Price();
+//        price2.setValue(100000);
+//        price2.setCurrency("INR");
+//
+//
+//        Product product3 = new Product();
+//        product3.setPrice(price2);
+//        product3.setTitle("iPhone 15 pro max");
+//        product3.setDescription("Best iPhone ever.");
+//        product3.setImage("IMG");
+//        product3.setCategory(category);
+//        Product savedProduct2 = productRepository.save(product3);
 
+		Optional<Category> categoryOptional= catogoryRepository.findById(UUID.fromString("54933799-1ff0-4a92-b08e-438d84ff87af"));
+
+		Category category = categoryOptional.get();
+		List<Product> products = category.getProducts();
+		for (Product product : products) {
+			System.out.println(product.getTitle());
+		}
 	}
-
 }
